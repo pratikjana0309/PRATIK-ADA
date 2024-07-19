@@ -1,0 +1,311 @@
+#include <stdio.h>
+
+int count = 0;
+int i, j, u, v, k = 0, min, sum = 0;
+int t[10][10], cost[10][10];
+int p[10], d[10];
+
+void kruskal(int cost[10][10], int n);
+int find(int i);
+void union1(int i, int j);
+
+void main() {
+    int n;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the cost adjacency matrix:\n");
+    for(i = 0; i < n; i++) {
+        for(j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+            if(cost[i][j] == 0) {
+                cost[i][j] = 999; 
+            }
+        }
+    }
+
+    kruskal(cost, n);
+
+    printf("The edges in the minimum spanning tree are:\n");
+    for(i = 0; i < k; i++) {
+        printf("(%d, %d)\n", t[i][0], t[i][1]);
+    }
+    printf("Minimum cost: %d\n", sum);
+}
+
+void kruskal(int cost[10][10], int n) {
+    for(int i = 0; i < n; i++) {
+        p[i] = i;
+    }
+
+    while(count < n - 1) {
+        min = 999;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(cost[i][j] < min) {
+                    min = cost[i][j];
+                    u = i;
+                    v = j;
+                }
+            }
+        }
+        
+        if(find(u) != find(v)) {
+            t[k][0] = u;
+            t[k][1] = v;
+            k++;
+            count++;
+            sum += min;
+            union1(u, v);
+        }
+        cost[u][v] = cost[v][u] = 999; 
+    }
+}
+
+int find(int i) {
+    while(p[i] != i) {
+        i = p[i];
+    }
+    return i;
+}
+
+void union1(int i, int j) {
+    int a = find(i);
+    int b = find(j);
+    p[a] = b;
+}
+
+//Output:
+Enter the number of vertices: 4
+Enter the cost adjacency matrix:
+0 1 5 2
+1 0 9999 9999
+5 9999 0 3
+2 9999 3 0
+The edges in the minimum spanning tree are:
+(0, 1)
+(0, 3)
+(2, 3)
+Minimum cost: 6
+
+
+
+
+
+
+
+// Online C compiler to run C program online
+#include <stdio.h>
+
+void dijkstras(int [][50], int);
+void main()
+{
+    int cost[50][50];
+    int n;
+    printf("Enter no.of vertices:\n");
+    scanf("%d",&n);
+    printf("Enter cost adjacency matrix:\n");
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            scanf("%d",&cost[i][j]);
+        }
+    }
+    
+    printf("Result:\n");
+    dijkstras(cost,n);
+    
+}
+
+void dijkstras(int a[][50], int n)
+{
+    int d[10];
+    int visited[10];
+    int p[10];
+    int u,v;
+    int s;
+    int min;
+    
+    printf("Enter the source:\n");
+    scanf("%d",&s);
+    
+    for(int i=0;i<n;i++)
+    {
+        d[i]=a[s][i];
+        visited[i]=0;
+        p[i]=s;
+    }
+    
+    visited[s]=1;
+    for(int i=0;i<n;i++)
+    {
+        min=999;
+        u=0;
+        for(int j=0;j<n;j++)
+        {
+            if(visited[j]==0)
+            {
+                if(d[j]<min)
+                {
+                    min=d[j];
+                    u=j;
+                }
+            }
+        }
+        visited[u]=1;
+        for(int v=0;v<n;v++)
+        {
+            if(visited[v]==0 && d[u]+a[u][v]<d[v])
+            {
+                d[v]=d[u]+a[u][v];
+                p[v]=u;
+            }
+        }
+    }
+    
+    printf("The shortest paths from vertex %d are:\n", s);
+    for(int i = 0; i < n; i++) {
+        if(i != s) {
+            printf("To vertex %d: Distance = %d, Path = %d", i, d[i], i);
+            int j = i;
+            while(p[j] != s) {
+                j = p[j];
+                printf(" <- %d", j);
+            }
+            printf(" <- %d\n", s);
+        }
+    }
+}
+
+//Output:
+Enter no.of vertices:
+4
+Enter cost adjacency matrix:
+0 1 5 2
+1 0 9999 9999
+5 9999 0 3
+2 9999 3 0
+Result:
+Enter the source:
+0
+The shortest paths from vertex 0 are:
+To vertex 1: Distance = 1, Path = 1 <- 0
+To vertex 2: Distance = 5, Path = 2 <- 0
+To vertex 3: Distance = 2, Path = 3 <- 0
+
+
+
+
+
+
+// Online C compiler to run C program online
+#include <stdio.h>
+void prims(int[][50],int);
+void main()
+{
+    int cost[50][50];
+    int n;
+    printf("Enter no.of vertices:\n");
+    scanf("%d",&n);
+    printf("Enter cost adjacency matrix:\n");
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            scanf("%d",&cost[i][j]);
+        }
+    }
+    
+    printf("Result:\n");
+    prims(cost,n);
+    
+}
+
+void prims(int cost[][50], int n)
+{
+    int d[10];
+    int p[10];
+    int s[10];
+    int min=999;
+    int source=0;
+    int sum;
+    int k;
+    int u,v;
+    int t[10][10];
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(cost[i][j]!=0 && cost[i][j]<min)
+            {
+                min=cost[i][j];
+                source=i;
+            }
+        }
+    }
+    
+    for(int i=0;i<n;i++)
+    {
+        d[i]=cost[source][i];
+        s[i]=0;
+        p[i]=source;
+    }
+    
+    s[source]=1;
+    sum=0;
+    k=0;
+    
+    for(int i=1;i<n;i++)
+    {
+        u=-1;
+        min=999;
+        for(int j=0;j<n;j++)
+        {
+            if(s[j]==0)
+            {
+                if(d[j]<min)
+                {
+                    min=d[j];
+                    u=j;
+                }
+            }
+        }
+       t[k][0]=u;
+       t[k][1]=p[u];
+       k=k+1;
+       sum=sum+cost[u][p[u]];
+       s[u]=1;
+       
+       for(int v=0;v<n;v++)
+       {
+           if(s[v]==0 && cost[u][v]<d[v])
+           {
+               d[v]=cost[u][v];
+               p[v]=u;
+           }
+       }
+    }
+    printf("Shortest path cost:%d\n",sum);
+    printf("Minimum spanning tree vertices:\n");
+    for(int i=0;i<n;i++)
+    {
+        printf("%d,%d\n",t[i][0],t[i][1]);
+}
+}
+
+//Output:
+Enter no.of vertices:
+4
+Enter cost adjacency matrix:
+0 1 5 2
+1 0 9999 9999
+5 9999 0 3
+2 9999 3 0
+Result:
+Shortest path cost:6
+Minimum spanning tree vertices:
+1,0
+3,0
+2,3
+0,0
